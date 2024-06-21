@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const multer = require('multer');
-const { imageSchema } = require('./db/photoschema');
+const { imageSchema } = require('./photoschema');
 const cors = require('cors');
 
 
