@@ -23,7 +23,7 @@ app.get('/',(req,res)=>{
 })
 
 const storage=multer.diskStorage({
-    destination:'./upload/images',
+    destination:'./new_uploads/images',
     filename:(req,file,cb)=>{
         return cb(null,`${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
     }
@@ -31,7 +31,7 @@ const storage=multer.diskStorage({
 })
 const upload=multer({storage:storage});
 // Creating upload Endpoint for image
-app.use("/images",express.static('upload/images'));
+app.use("/images",express.static('new_uploads/images'));
 app.post('/upload',upload.single('product'),(req,res)=>{
   res.json({
     success:1,
