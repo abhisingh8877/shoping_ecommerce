@@ -19,14 +19,14 @@ const ShopCategory = (props) => {
         </div>
       </div>
       <div className='shopcategory-products'> {/* Fixed typo here */}
-        {
-          all_product.map((item, i) => { // Fixed typo here
+        { 
+          all_product?all_product.map((item, i) => { // Fixed typo here
             if (props.category === item.category) {
               return <Item key={i} id={item.id} name={item.name} image={item.image} new_price={item.new_price} old_price={item.old_price} />;
             } else {
               return null;
             }
-          })
+          }):<></>
         }
       </div>
       <div className="shopcategory-loadmore">

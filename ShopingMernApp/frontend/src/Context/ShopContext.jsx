@@ -1,4 +1,5 @@
-import React, { createContext, useCallback, useEffect, useMemo, useState} from 'react';
+import React, { createContext, useEffect, useMemo, useState} from 'react';
+import Item from '../Components/item/Item';
 
 
 export const ShopContextbase = createContext(null);
@@ -16,12 +17,12 @@ const ShopContext = (props) => {
   const [all_product,setAll_product]=useState([]);
   const [cartItems,setCartItems]=useState(getDefaultCart());
   useEffect(() => {
-    fetch('http://localhost:4000/allproducts')
+    fetch('https://shoping-ecommerce-1.onrender.com/allproducts')
         .then((res) => res.json())
         .then((data) => setAll_product(data));
 
     if (localStorage.getItem('auth-token')) {
-        fetch('http://localhost:4000/getcart', {
+        fetch('https://shoping-ecommerce-1.onrender.com/getcart', {
             method: 'POST',
             headers: {
                 Accept: 'application/form-data',
@@ -42,7 +43,7 @@ const ShopContext = (props) => {
     setCartItems((prev)=>({...prev,[itemId]:prev[itemId]+1}))
     if(localStorage.getItem('auth-token'))
     {
-        fetch('http://localhost:4000/addtocart',{
+        fetch('https://shoping-ecommerce-1.onrender.com/addtocart',{
           method:'POST',
           headers:{
             Accept:'application/form-data',
@@ -61,7 +62,7 @@ const ShopContext = (props) => {
     setCartItems((prev)=>({...prev,[itemId]:prev[itemId]-1}))
     if(localStorage.getItem('auth-token'))
       {
-          fetch('http://localhost:4000/removefromcart',{
+          fetch('https://shoping-ecommerce-1.onrender.com/removefromcart',{
             method:'POST',
             headers:{
               Accept:'application/form-data',
@@ -77,14 +78,18 @@ const ShopContext = (props) => {
   }
   const getTotalAmount=useMemo(()=>{
     let totalAmount=0;
-    for(const item in cartItems)
+    if(all_product.size)
     {
-      if(cartItems[item]>0)
-      {
-        let iteminfo=all_product.find((product)=>product.id===Number(item));
-        totalAmount+=iteminfo.new_price*cartItems[item];
-      }
+      for(const item in cartItems)
+        {
+          if(cartItems[item]>0)
+          {
+            let iteminfo=all_product.find((product)=>product.id===Number(item));
+            totalAmount+=iteminfo.new_price*cartItems[item];
+          }
+        }
     }
+   
     return totalAmount;
   },[cartItems,all_product]);
   const getTotalCartItems=useMemo(()=>{
